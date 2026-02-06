@@ -21,7 +21,7 @@ public:
             TreeNode* rightSide = nullptr;
             //now you want to traverse the list since its bfs and then keep track of every level
             int qLength = q.size();
-            for(int i = qLength; i > 0; --i) //this ensures you always get the right side by running the amount of sizes
+            for(int i = qLength; i > 0; --i) // keep updating, the last node we see in this level will be the rightmost node
             {
                 TreeNode* node = q.front();
                 q.pop();
@@ -33,7 +33,7 @@ public:
                     q.push(node->right);
                 }
             }
-            //after you get the queues and the right sides, after each queue ends and you get the right side you want to puhs that into result
+            // after finishing this level, add the rightmost node to the result
             if(rightSide)
             {
                 result.push_back(rightSide->val);
