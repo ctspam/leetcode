@@ -1,23 +1,22 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        if (s.empty()) return 0;  
-        int result = 0;  // Length of longest substring found so far.
-        int start = 0;  // Start index of current substring with unique characters.
-        // Track if a character is in [start, i]. `char` is 8-bit (hence 256 possibilties).
-        // More generic, but slower, would be a std::unordered_set<char>.
-        vector<bool> chars_in_substring;
-        chars_in_substring.resize(256);
-        for (int i = 0; i < s.size(); ++i) {
-            // Advance `start` until [start, i] contains only unique characters.
-            // This means s[i] cannot be in [start, i-1].
-            while (chars_in_substring[s[i]]) {
-                chars_in_substring[s[start++]] = false;
+        int l = 0;                       // left pointer
+        int longest = 0;                 // best answer so far
+        unordered_set<char> sett;        // stores chars currently in the window
+
+        for (int r = 0; r < (int)s.size(); r++) {     // right pointer expands window
+            while (sett.count(s[r])) {                // while s[r] repeats in window
+                sett.erase(s[l]);                     // remove leftmost char
+                l++;                                  // shrink from the left
             }
-            chars_in_substring[s[i]] = true;
-            // Is this our new longest substring?
-            result = max(result, i-start+1);	
+
+            // now window [l..r] has all unique chars
+            int w = (r - l) + 1;                      // window length
+            longest = max(longest, w);                // update answer
+            sett.insert(s[r]);                        // include current char
         }
-        return result;
+
+        return longest;
     }
 };
