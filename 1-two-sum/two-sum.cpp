@@ -20,19 +20,46 @@ public:
         // so approaching this brute force, you want to find its complement
         // and then find its complement and return if its found in the array
 
-        for (int i = 0; i < nums.size(); ++i)
-        {
-            for (int j = i+1; j < nums.size(); ++j)
-            {
-                int complement = target - nums[i];
-                if(complement == nums[j])
-                {
-                    return {i,j};
-                }
-            }
-        }
-        return {};
+        // for (int i = 0; i < nums.size(); ++i)
+        // {
+        //     for (int j = i+1; j < nums.size(); ++j)
+        //     {
+        //         int complement = target - nums[i];
+        //         if(complement == nums[j])
+        //         {
+        //             return {i,j};
+        //         }
+        //     }
+        // }
+        // return {};
 
         // TC O(n^2), SC = O(1)
+
+        // a more optimized appproach is using a hashmap
+
+        // we can store the indexes and the values like thius
+        // 2 -> 0
+        // 7 -> 1
+        //11 -> 2
+        //15 -> 3
+
+        // hashMap[2] = 0;
+        // {2:0}
+
+        unordered_map<int, int> hashMap; 
+
+        for (int i = 0; i < nums.size(); ++i)
+        {
+            int complement = target - nums[i];
+
+            if(hashMap.find(complement) != hashMap.end())
+            {
+                return {hashMap[complement], i};
+            }
+            
+            hashMap[nums[i]] = i;
+
+        }
+        return {};
     }
 };
