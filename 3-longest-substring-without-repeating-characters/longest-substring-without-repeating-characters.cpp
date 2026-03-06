@@ -1,22 +1,20 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        int l = 0;                       // left pointer
-        int longest = 0;                 // best answer so far
-        unordered_set<char> sett;        // stores chars currently in the window
-
-        for (int r = 0; r < (int)s.size(); r++) {     // right pointer expands window
-            while (sett.count(s[r])) {                // while s[r] repeats in window
-                sett.erase(s[l]);                     // remove leftmost char
-                l++;                                  // shrink from the left
+        int left = 0, longest = 0;
+        size_t n = s.size();
+        unordered_set<char> hashSet;
+        for(int right = 0; right < n; ++right)
+        {
+            while(hashSet.count(s[right]))
+            {    
+                hashSet.erase(s[left]);
+                ++left;
             }
-
-            // now window [l..r] has all unique chars
-            int w = (r - l) + 1;                      // window length
-            longest = max(longest, w);                // update answer
-            sett.insert(s[r]);                        // include current char
+            int width = (right - left) + 1;
+            longest = max(longest, width);
+            hashSet.insert(s[right]);
         }
-
         return longest;
     }
 };
