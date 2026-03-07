@@ -1,35 +1,44 @@
 class Solution {
-    int d4i[4] = {0,0,1,-1};
-    int d4j[4] = {1,-1,0,0};
 public:
-    int numIslands(vector<vector<char>>& grid) {
-        int n=grid.size(),m=grid[0].size();
-        vector<vector<int>> visited(n,vector<int>(m,0));
-        int cnt=0;
+    int numIslands(vector<vector<char>>& grid) 
+    {
+        // check the cases first
+        if(grid.size() == 0 || grid[0].size() == 0)
+        {
+            return 0;
+        }
 
-        for(int i=0;i<n;i++) {
-            for(int j=0;j<m;j++) {
-                if(!visited[i][j]&&grid[i][j]=='1') {  
-                    queue<pair<int,int>> q;
-                    q.push({i,j}); 
-                    cnt++;
-                    while(q.size()) {
-                        auto [x,y]=q.front();q.pop();
-                        if(visited[x][y]) continue;
-                        visited[x][y]=1;
-                        for(int k=0;k<4;k++) {
-                            int newX=x+d4i[k];
-                            int newY=y+d4j[k];
-                            if(newX<n&&newX>=0&&newY<m&&newY>=0&&!visited[newX][newY]&&grid[newX][newY]=='1') {
-                                q.push({newX,newY});
-                            }
-                        }
-                    } 
-                    
-
-                }
+        int count = 0;
+        for(int i = 0; i < grid.size(); ++i)
+        {
+            for(int j = 0; j < grid[0].size(); ++j)
+            {
+                if(grid[i][j] == '1')
+                {
+                    dfs(grid, i, j);
+                    ++count;
+                }   
             }
         }
-        return cnt;
+
+        return count;
+    }
+
+private: void dfs(vector<vector<char>>& grid, int i, int j)
+    {
+        // these check if the dfs is going to be out of bounds when traversing
+        if (i < 0 || i >= grid.size() || j < 0 || j >= grid[0].size() || grid[i][j] == '0')
+        {
+            return;
+        }
+
+        // this will mark the cells visited
+        grid[i][j] = '0';
+
+        // NOW explore all four directions
+        dfs(grid, i+1, j);
+        dfs(grid, i-1, j);
+        dfs(grid, i, j+1);
+        dfs(grid, i, j-1);
     }
 };
